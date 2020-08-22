@@ -10,7 +10,6 @@
     "es6",
     "jest"
   ],
-  // "typings": "./index.d.ts",
   "author": "CJ_Zheng",
   "license": "MIT",
   "devDependencies": {
