@@ -1,0 +1,21 @@
+{
+  "name": "sipo-utils",
+  "version": "0.1.0",
+  "description": "a utils library for sipo project",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "es6",
+    "jest"
+  ],
+  "typings": "./index.d.ts",
+  "author": "CJ_Zheng",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "jest": "^26.4.1"
+  }
+}
