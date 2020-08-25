@@ -51,4 +51,37 @@ describe('高亮方法测试', () => {
     const tobe = `对一个<div>正则</div>表达式<span style="color: black">&gt;</span>模式`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
+  test('截词符高亮', () => {
+    const targetStr = `对一个正则表达式模式spans and hello!`
+    const highlighters = [{
+      word: 'hello?',
+      color: 'blue'
+    }, {
+      word: 'spans',
+      color: 'black'
+    }]
+    const tobe = `对一个正则表达式模式<span style="color: black">spans</span> and <span style="color: blue">hello!</span>`
+    expect(utils.highlight(targetStr, highlighters, true)).toBe(tobe)
+  })
+  test('关联高亮,w运算符', () => {
+    const targetStr = `对一个正则表达式模式`
+    const highlighters = [{
+      word: '正 w  则',
+      color: 'blue'
+    }, {
+      word: '表 1w 式',
+      color: 'black'
+    }]
+    const tobe = `对一个<span style="color: blue">正则</span><span style="color: black">表达式</span>模式`
+    expect(utils.highlight(targetStr, highlighters, true, true)).toBe(tobe)
+  })
+  test('关联高亮,d运算符', () => {
+    const targetStr = `对一个正则表达式模式式应表`
+    const highlighters = [{
+      word: '表 1d  式',
+      color: 'blue'
+    }]
+    const tobe = `对一个正则<span style="color: blue">表达式</span>模式<span style="color: blue">式应表</span>`
+    expect(utils.highlight(targetStr, highlighters, true, true)).toBe(tobe)
+  })
 })
