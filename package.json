@@ -1,14 +1,12 @@
 {
   "name": "sipo-utils",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "a utils library for sipo project",
   "main": "dist/sipoUtils.js",
   "module": "dist/sipoUtils.esm.js",
   "scripts": {
     "test": "jest",
-    "build:umd": "node ./node_modules/rollup/dist/bin/rollup -c ./rollup.config.umd.js",
-    "build:esm": "node ./node_modules/rollup/dist/bin/rollup -c ./rollup.config.esm.js",
-    "build": "yarn run build:umd && yarn run build:esm"
+    "build": "node ./node_modules/rollup/dist/bin/rollup -c"
   },
   "keywords": [
     "es6",
