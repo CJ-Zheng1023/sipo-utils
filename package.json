@@ -1,18 +1,24 @@
 {
   "name": "sipo-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a utils library for sipo project",
   "main": "dist/sipoUtils.js",
   "module": "dist/sipoUtils.esm.js",
   "scripts": {
     "test": "jest",
     "build:umd": "node ./node_modules/rollup/dist/bin/rollup -c ./rollup.config.umd.js",
-    "build:esm": "node ./node_modules/rollup/dist/bin/rollup -c ./rollup.config.esm.js"
+    "build:esm": "node ./node_modules/rollup/dist/bin/rollup -c ./rollup.config.esm.js",
+    "build": "yarn run build:umd && yarn run build:esm"
   },
   "keywords": [
     "es6",
     "jest"
   ],
+  "typings": "types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:CJ-Zheng1023/sipo-utils.git"
+  },
   "author": "CJ_Zheng",
   "license": "MIT",
   "devDependencies": {
