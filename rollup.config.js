@@ -1,3 +1,4 @@
+import babel from 'rollup-plugin-babel'
 export default {
   input: './index.js',
   output: [{
@@ -8,5 +9,7 @@ export default {
     file: './dist/sipoUtils.esm.js',
     format: 'es'
   }],
-  plugins: []
+  plugins: [babel({
+    exclude: '**/node_modules/**'
+  })]
 }
