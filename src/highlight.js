@@ -50,6 +50,36 @@ const _replaceRelation = word => {
   }
 }
 /**
+ * 生成正则规则
+ * @param highlighter  高亮关键词对象
+ * @param truncatable  启用截词符高亮
+ * @param relatable    启用关联高亮
+ * @returns {*}        返回正则规则
+ * @private
+ */
+const _createRule = (highlighter, truncatable, relatable) => {
+  let {word} = highlighter
+  //替换高亮词中的<,>
+  word = word.replace(/</gi, '&lt;').replace(/>/gi, '&gt;')
+  //高亮关键词匹配规则,标签中的内容不可匹配
+  if (truncatable) {
+    word = _replaceTruncation(word)
+  }
+  if (relatable) {
+    word = _replaceRelation(word)
+  }
+  return word
+}
+/**
+ * 把单高亮关键词对象封装成集合
+ * @param highlighters
+ * @returns {[]}
+ * @private
+ */
+const _toArray = (highlighters) => {
+  return Array.isArray(highlighters) ? highlighters : [highlighters]
+}
+/**
  * 执行高亮操作
  * @author zhengchj
  * @param targetStr     目标字符串
@@ -57,27 +87,40 @@ const _replaceRelation = word => {
  * @param truncatable   启用截词符高亮，默认值为true
  * @param relatable     启用关联高亮，默认值为false
  */
-export default (targetStr, highlighters, truncatable = true, relatable = false) => {
-  let str = _removeTag(targetStr)
-  str = _replaceArrow(str)
-  highlighters.forEach(item => {
-    let word = item.word
-    const color = item.color
+export const highlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
+  // let str = _removeTag(targetStr)
+  let str = _replaceArrow(targetStr)
+  _toArray(highlighters).forEach(item => {
+    let {word, color} = item
     if (!word) {
       return
     }
-    //替换高亮词中的<,>
-    word = word.replace(/</gi, '&lt;').replace(/>/gi, '&gt;')
-    //高亮关键词匹配规则,标签中的内容不可匹配
-    if (truncatable) {
-      word = _replaceTruncation(word)
-    }
-    if (relatable) {
-      word = _replaceRelation(word)
-    }
-    const regExp = new RegExp(`((?<!<[^<>]+)${word}(?![^<>]+>))`, 'gi')
+    let rule = _createRule(item, truncatable, relatable)
+    const regExp = new RegExp(`((?<!<[^<>]+)${rule}(?![^<>]+>))`, 'gi')
     //高亮关键词加高亮标签
     str = str.replace(regExp, `<span style="color: ${color}">$1</span>`)
+  })
+  return str
+}
+/**
+ * 清除高亮操作
+ * @author zhengchj
+ * @param targetStr     目标字符串
+ * @param highlighters  高亮关键词集合
+ * @param truncatable   启用截词符高亮，默认值为true
+ * @param relatable     启用关联高亮，默认值为false
+ */
+export const unHighlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
+  let str = _replaceArrow(targetStr)
+  _toArray(highlighters).forEach(item => {
+    let {word, color} = item
+    if (!word) {
+      return
+    }
+    let rule = _createRule(item, truncatable, relatable)
+    const regExp = new RegExp(`<span style="color: ${color}">(${rule})</span>`, 'gi')
+    //高亮关键词加高亮标签
+    str = str.replace(regExp, `$1`)
   })
   return str
 }
