@@ -74,7 +74,7 @@ const _toArray = (highlighters) => {
  * 执行高亮操作
  * @author zhengchj
  * @param targetStr     目标字符串
- * @param highlighters  高亮关键词集合
+ * @param highlighters  高亮关键词集合或对象
  * @param truncatable   启用截词符高亮，默认值为true
  * @param relatable     启用关联高亮，默认值为false
  * @return string       执行高亮后的字符串
@@ -98,7 +98,7 @@ export const highlight = (targetStr, highlighters, truncatable = true, relatable
  * 清除高亮操作
  * @author zhengchj
  * @param targetStr     目标字符串
- * @param highlighters  高亮关键词集合
+ * @param highlighters  高亮关键词集合或对象
  * @param truncatable   启用截词符高亮，默认值为true
  * @param relatable     启用关联高亮，默认值为false
  * @return string       清除高亮后的字符串

@@ -29,4 +29,4 @@ export declare function highlight(targetStr: string, highlighters: Highlighters,
  * @param {boolean} relatable              启用关联高亮，默认值为false
  * @returns {string}                       去高亮后的字符串
  */
-export declare function unHighlight(targetStr: string, highlighters: Highlighters, truncatable?: boolean = true, relatable?: boolean = false): string
+export declare function unhighlight(targetStr: string, highlighters: Highlighters, truncatable?: boolean = true, relatable?: boolean = false): string
