@@ -11,6 +11,7 @@ export type Highlighters = Array<Highlighter> | Highlighter
 
 /**
  * 高亮操作
+ * @author zhengchj
  * @param {string} targetStr           目标字符串
  * @param {Highlighters} highlighters  高亮关键词集合或对象
  * @param {boolean} truncatable        启用截词符高亮，默认值为true
@@ -21,6 +22,7 @@ export declare function highlight(targetStr: string, highlighters: Highlighters,
 
 /**
  * 清除高亮
+ * @author zhengchj
  * @param {string} targetStr               目标字符串
  * @param {Highlighters} highlighters      高亮关键词集合或对象
  * @param {boolean} truncatable            启用截词符高亮，默认值为true

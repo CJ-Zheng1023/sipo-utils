@@ -1,25 +1,14 @@
-/**
- * 清除高亮标签
- * @author zhengchj
- * @param targetStr
- * @private
- */
-const _removeTag = targetStr => targetStr.replace(/(<span[^>]*>|<\/span>)/gi, '')
-/**
- * 替换非标签的<,>符号
- * @author zhengchj
- * @param targetStr
- * @private
- */
-const _replaceArrow = targetStr => targetStr.replace(/<(?![^<>]+>)/gi, '&lt;').replace(/(?<!<[^<>]+)>/gi, '&gt;')
+import {replaceNotTagArrow, replaceAllArrow} from './helpers'
 /**
  * 截词符转换成正则表达形式
+ * @author zhengchj
  * @param word   高亮关键词
  * @private
  */
 const _replaceTruncation = word => word.replace(/#/gi, '[a-zA-Z]').replace(/[?？]/gi, '.?')
 /**
  * 关联高亮词转换成正则表达式
+ * @author zhengchj
  * @param word   高亮关键词
  * @returns string
  * @example 输入:A 3W B    输出:A.{3}B         输入:A 3D B   输出:(A.{3}B)|(B.{3}A)
@@ -51,6 +40,7 @@ const _replaceRelation = word => {
 }
 /**
  * 生成正则规则
+ * @author zhengchj
  * @param highlighter  高亮关键词对象
  * @param truncatable  启用截词符高亮
  * @param relatable    启用关联高亮
@@ -60,7 +50,7 @@ const _replaceRelation = word => {
 const _createRule = (highlighter, truncatable, relatable) => {
   let {word} = highlighter
   //替换高亮词中的<,>
-  word = word.replace(/</gi, '&lt;').replace(/>/gi, '&gt;')
+  word = replaceAllArrow(word)
   //高亮关键词匹配规则,标签中的内容不可匹配
   if (truncatable) {
     word = _replaceTruncation(word)
@@ -72,6 +62,7 @@ const _createRule = (highlighter, truncatable, relatable) => {
 }
 /**
  * 把单高亮关键词对象封装成集合
+ * @author zhengchj
  * @param highlighters
  * @returns {[]}
  * @private
@@ -86,10 +77,11 @@ const _toArray = (highlighters) => {
  * @param highlighters  高亮关键词集合
  * @param truncatable   启用截词符高亮，默认值为true
  * @param relatable     启用关联高亮，默认值为false
+ * @return string       执行高亮后的字符串
  */
 export const highlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
   // let str = _removeTag(targetStr)
-  let str = _replaceArrow(targetStr)
+  let str = replaceNotTagArrow(targetStr)
   _toArray(highlighters).forEach(item => {
     let {word, color} = item
     if (!word) {
@@ -109,9 +101,10 @@ export const highlight = (targetStr, highlighters, truncatable = true, relatable
  * @param highlighters  高亮关键词集合
  * @param truncatable   启用截词符高亮，默认值为true
  * @param relatable     启用关联高亮，默认值为false
+ * @return string       清除高亮后的字符串
  */
-export const unHighlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
-  let str = _replaceArrow(targetStr)
+export const unhighlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
+  let str = replaceNotTagArrow(targetStr)
   _toArray(highlighters).forEach(item => {
     let {word, color} = item
     if (!word) {

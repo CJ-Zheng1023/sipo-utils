@@ -105,7 +105,7 @@ describe(`清除高亮方法测试`, () => {
       color: 'blue'
     }]
     const tobe = `对一个正则表达式模式`
-    expect(utils.unHighlight(targetStr, highlighters)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters)).toBe(tobe)
   })
   test('高亮关键词为标签内容', () => {
     const targetStr = `对一个<span style="color: red">正则</span>表达式模式`
@@ -117,7 +117,7 @@ describe(`清除高亮方法测试`, () => {
       color: 'blue'
     }]
     const tobe = `对一个正则表达式模式`
-    expect(utils.unHighlight(targetStr, highlighters)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters)).toBe(tobe)
   })
   test('高亮关键词带尖括号', () => {
     const targetStr = `对一个<span style="color: red">正则</span>表达式<span style="color: black">&gt;</span>模式<span style="color: blue">&lt;span</span>`
@@ -132,7 +132,7 @@ describe(`清除高亮方法测试`, () => {
       color: 'black'
     }]
     const tobe = `对一个正则表达式&gt;模式&lt;span`
-    expect(utils.unHighlight(targetStr, highlighters)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters)).toBe(tobe)
   })
   test('原始文本带标签，高亮关键词带尖括号和标签内容', () => {
     const targetStr = `对一个<div>正则</div>表达式<span style="color: black">&gt;</span>模式`
@@ -144,7 +144,7 @@ describe(`清除高亮方法测试`, () => {
       color: 'black'
     }]
     const tobe = `对一个<div>正则</div>表达式&gt;模式`
-    expect(utils.unHighlight(targetStr, highlighters)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters)).toBe(tobe)
   })
   test('截词符高亮', () => {
     const targetStr = `对一个正则表达式模式<span style="color: black">spans</span> and <span style="color: blue">hello!</span>`
@@ -156,7 +156,7 @@ describe(`清除高亮方法测试`, () => {
       color: 'black'
     }]
     const tobe = `对一个正则表达式模式spans and hello!`
-    expect(utils.unHighlight(targetStr, highlighters, true)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters, true)).toBe(tobe)
   })
   test('关联高亮,w运算符', () => {
     const targetStr = `对一个<span style="color: blue">正则</span><span style="color: black">表达式</span>模式`
@@ -168,7 +168,7 @@ describe(`清除高亮方法测试`, () => {
       color: 'black'
     }]
     const tobe = `对一个正则表达式模式`
-    expect(utils.unHighlight(targetStr, highlighters, true, true)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters, true, true)).toBe(tobe)
   })
   test('关联高亮,d运算符', () => {
     const targetStr = `对一个正则<span style="color: blue">表达式</span>模式<span style="color: blue">式应表</span>`
@@ -177,7 +177,7 @@ describe(`清除高亮方法测试`, () => {
       color: 'blue'
     }]
     const tobe = `对一个正则表达式模式式应表`
-    expect(utils.unHighlight(targetStr, highlighters, true, true)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters, true, true)).toBe(tobe)
   })
   test('传单个关键词', () => {
     const targetStr = `对一个正则<span style="color: blue">表达式</span>模式<span style="color: blue">式应表</span>`
@@ -186,6 +186,6 @@ describe(`清除高亮方法测试`, () => {
       color: 'blue'
     }
     const tobe = `对一个正则表达式模式式应表`
-    expect(utils.unHighlight(targetStr, highlighters, true, true)).toBe(tobe)
+    expect(utils.unhighlight(targetStr, highlighters, true, true)).toBe(tobe)
   })
 })
