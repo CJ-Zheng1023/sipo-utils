@@ -90,7 +90,7 @@ export const highlight = (targetStr, highlighters, truncatable = true, relatable
     let rule = _createRule(item, truncatable, relatable)
     const regExp = new RegExp(`((?<!<[^<>]+)${rule}(?![^<>]+>))`, 'gi')
     //高亮关键词加高亮标签
-    str = str.replace(regExp, `<span style="color: ${color}">$1</span>`)
+    str = str.replace(regExp, `<span class="hl" style="color: ${color}">$1</span>`)
   })
   return str
 }
@@ -111,7 +111,7 @@ export const unhighlight = (targetStr, highlighters, truncatable = true, relatab
       return
     }
     let rule = _createRule(item, truncatable, relatable)
-    const regExp = new RegExp(`<span style="color: ${color}">(${rule})</span>`, 'gi')
+    const regExp = new RegExp(`<span class="hl" style="color: ${color}">(${rule})</span>`, 'gi')
     //高亮关键词加高亮标签
     str = str.replace(regExp, `$1`)
   })

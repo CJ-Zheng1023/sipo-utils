@@ -40,5 +40,6 @@ export const focus = (targetStr, focusers) => {
   //第一个匹配的字符串
   let match = matches[0].replace(/@@/gi, '')
   //判断第一个匹配的字符串在目标字符串中是否在开头，若是则需要去掉...
+  //todo 待优化。。。
   return !str.startsWith(match) ? result : result.substr(3)
 }
