@@ -58,6 +58,18 @@
       */
      focus(targetStr, focusers)
      ```
+    
+    - highdense  高密
+         
+     ```
+     /**
+      * 执行聚焦操作
+      * @param container     外层容器
+      * @param className     需要高密的样式名，默认为hl
+      * @returns Map         高密Map<颜色, 相对高度百分比集合set>
+      */
+      focus(targetStr, focusers)
+     ```
 
      
 
