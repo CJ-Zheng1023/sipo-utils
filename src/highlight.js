@@ -1,4 +1,4 @@
-import {replaceNotTagArrow, replaceAllArrow} from './helpers'
+import {replaceNotTagArrow, replaceAllArrow, toArray} from './helpers'
 /**
  * 截词符转换成正则表达形式
  * @author zhengchj
@@ -61,16 +61,6 @@ const _createRule = (highlighter, truncatable, relatable) => {
   return word
 }
 /**
- * 把单高亮关键词对象封装成集合
- * @author zhengchj
- * @param highlighters
- * @returns {[]}
- * @private
- */
-const _toArray = (highlighters) => {
-  return Array.isArray(highlighters) ? highlighters : [highlighters]
-}
-/**
  * 执行高亮操作
  * @author zhengchj
  * @param targetStr     目标字符串
@@ -82,7 +72,7 @@ const _toArray = (highlighters) => {
 export const highlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
   // let str = _removeTag(targetStr)
   let str = replaceNotTagArrow(targetStr)
-  _toArray(highlighters).forEach(item => {
+  toArray(highlighters).forEach(item => {
     let {word, color} = item
     if (!word) {
       return
@@ -105,7 +95,7 @@ export const highlight = (targetStr, highlighters, truncatable = true, relatable
  */
 export const unhighlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
   let str = replaceNotTagArrow(targetStr)
-  _toArray(highlighters).forEach(item => {
+  toArray(highlighters).forEach(item => {
     let {word, color} = item
     if (!word) {
       return

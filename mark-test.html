@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="test">
+  <p>你好啊，12<span>3</span>4567890拜拜！</p>
+  <p>hello everyone!</p>
+</div>
+<script src="dist/sipoUtils.js"></script>
+<script type="text/javascript">
+  var markers = [{start: {tagName: 'p', tagIndex: 0, offset: 1}, end: {tagName: 'p', tagIndex: 0, offset: 3}},
+    {start: {tagName: 'p', tagIndex: 1, offset: 2}, end:{tagName: 'p', tagIndex: 1, offset: 5}}]
+  //sipoUtils.mark(document.querySelector('#test'), markers)
+</script>
+</body>
+</html>
