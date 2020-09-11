@@ -1,4 +1,6 @@
 import babel from 'rollup-plugin-babel'
+import postcss from 'rollup-plugin-postcss'
+import cssnano from 'cssnano'
 export default {
   input: './index.js',
   output: [{
@@ -9,7 +11,15 @@ export default {
     file: './dist/sipoUtils.esm.js',
     format: 'es'
   }],
-  plugins: [babel({
-    exclude: '**/node_modules/**'
-  })]
+  plugins: [
+    postcss({
+      extensions: ['.css'],
+      plugins: [
+        cssnano()
+      ]
+    }),
+    babel({
+      exclude: '**/node_modules/**'
+    })
+  ]
 }

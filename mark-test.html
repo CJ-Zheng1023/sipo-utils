@@ -9,11 +9,36 @@
   <p>你好啊，12<span>3</span>4567890拜拜！</p>
   <p>hello everyone!</p>
 </div>
+<div id="test1" style="width: 200px;height: 200px;overflow: auto">
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p><mark>1231231231312</mark></p>
+  <p id="p1">vvv</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+  <p>1231231231312</p>
+</div>
 <script src="dist/sipoUtils.js"></script>
 <script type="text/javascript">
-  var markers = [{start: {tagName: 'p', tagIndex: 0, offset: 1}, end: {tagName: 'p', tagIndex: 0, offset: 3}},
-    {start: {tagName: 'p', tagIndex: 1, offset: 2}, end:{tagName: 'p', tagIndex: 1, offset: 5}}]
-  //sipoUtils.mark(document.querySelector('#test'), markers)
+  var markers = [{id: 1, start: {tagName: 'p', tagIndex: 0, offset: 1}, end: {tagName: 'p', tagIndex: 0, offset: 4}},
+    {id: 2, start: {tagName: 'p', tagIndex: 1, offset: 2}, end:{tagName: 'p', tagIndex: 1, offset: 5}}];
+  var options = {
+    mouseenter(id){
+      console.log(`enter`, id)
+    },
+    mouseleave(id){
+      console.log(`leave`, id)
+    }
+  }
+  sipoUtils.mark(document.querySelector('#test'), markers, options)
 </script>
 </body>
 </html>

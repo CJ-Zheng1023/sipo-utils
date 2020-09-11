@@ -58,7 +58,7 @@
       */
      focus(targetStr, focusers)
      ```
-   
+
     - highdense  高密
       
       ```
@@ -70,13 +70,42 @@
        */
       highdense(container, className)
       ```
-   
-      
 
-     
+   - mark   标记
+
+     ```
+     /**
+      * 执行mark标记
+      * @param {HTMLElement} root         根节点
+      * @param {Markers} markers          标记对象或集合
+      * @param options                    配置项
+      */
+      mark(root, markers, options)
+     ```
+   - createMarker    生成标记对象
+
+     ```
+     /**
+      * 生成标记信息对象
+      * @param {HTMLElement} root        根节点
+      * @param {Range} range             鼠标拖动选中区域对象
+      * @return {Marker}                 标记对象
+      */
+     createMarker(root, range)
+     ```
+
+   - unmark   取消标记
+
+     ```
+     /**
+      * 删除标记
+      * @param {string} id               标记唯一标识
+      */
+     unmark(id)
+     ```
 
    
 
    
-   
+
    

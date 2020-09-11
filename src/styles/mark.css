@@ -1,0 +1,8 @@
+.sipo-mark{
+  cursor: pointer;
+  background-color: #ff9;
+  user-select: none;
+}
+.sipo-mark-hover{
+  background-color: #f7aaaa;
+}

@@ -1,4 +1,5 @@
-import {queryCommonParentNode, flattenTree, toArray} from './helpers'
+import {queryCommonParentNode, flattenTree, toArray, createUUID} from './helpers'
+import './styles/mark.css'
 /**
  * 获取指定元素
  * @author zhengchj
@@ -29,7 +30,7 @@ const _getNode = (pElement, offset, returnFirst) => {
     if (curNode.nodeType === 3) {
       realOffset = offset - curOffset
       curOffset += curNode.textContent.length
-      if (curOffset > offset) {
+      if (curOffset >= offset) {
         break
       }
     }
@@ -61,16 +62,42 @@ const _getSelectedNodes = (startNode, endNode) => {
     return flag === 1
   })
 }
+const MARK_ATTR = `data-mark-id`
+const DEFAULT_OPTIONS = {
+  className: 'sipo-mark',
+  hoverClassName: 'sipo-mark-hover',
+  mouseenter(id){},
+  mouseleave(id){}
+}
 /**
  * 包裹器
  * @author zhengchj
+ * @param root
  * @param nodes
+ * @param options
+ * @param id
  * @private
  */
-const _wrap = (nodes) => {
+const _wrap = (root, nodes, options, id) => {
+  // 跟设为相对定位，用于删除按钮的绝对定位
+  root.style.position = 'relative'
   nodes.forEach(node => {
     const wrap = document.createElement('span')
-    wrap.style.backgroundColor = '#ff9'
+    wrap.setAttribute(MARK_ATTR, id)
+    let {className, hoverClassName, mouseenter, mouseleave} = options
+    wrap.className = className
+    wrap.addEventListener('mouseenter', _ => {
+      mouseenter(id)
+      document.querySelectorAll(`[${MARK_ATTR}='${id}']`).forEach(el => {
+        el.className = `${className} ${hoverClassName}`
+      })
+    })
+    wrap.addEventListener('mouseleave', _ => {
+      mouseleave(id)
+      document.querySelectorAll(`[${MARK_ATTR}='${id}']`).forEach(dom => {
+        dom.className = className
+      })
+    })
     wrap.appendChild(node.cloneNode(false))
     node.parentNode.replaceChild(wrap, node)
   })
@@ -79,18 +106,22 @@ const _wrap = (nodes) => {
  * 执行mark标记
  * @author zhengchj
  * @param root
- * @param markers     首尾位置信息对象或集合         example: {start: {tagName: 'p', tagIndex: 0, offset: 1}, end: {tagName: 'p', tagIndex: 0, offset: 9}}
+ * @param markers     首尾位置信息对象或集合         example: {id: '', start: {tagName: 'p', tagIndex: 0, offset: 1}, end: {tagName: 'p', tagIndex: 0, offset: 9}}
  * @param options     配置项
  */
 export const mark = (root, markers, options) => {
+  if (!root) {
+    return
+  }
   toArray(markers).forEach(marker => {
-    let {start, end} = marker
+    let {id, start, end} = marker
     let startParentElement = _getElement(root, start)
     let endParentElement = _getElement(root, end)
     let startNode = _getNode(startParentElement, start.offset, false)
     let endNode = _getNode(endParentElement, end.offset, true)
     let selectedNodes = _getSelectedNodes(startNode, endNode)
-    _wrap(selectedNodes)
+    const op = options ? {...DEFAULT_OPTIONS, ...options} : DEFAULT_OPTIONS
+    _wrap(root, selectedNodes, op, id)
   })
 }
 /**
@@ -143,13 +174,39 @@ const _getRealOffset = (node, offset) => {
  * @author zhengchj
  * @param root      根节点
  * @param range     Range对象
- * @return object          example: {start: {tagName: 'p', tagIndex: 0, offset: 1}, end: {tagName: 'p', tagIndex: 0, offset: 9}}
+ * @return object          example: {id: '', start: {tagName: 'p', tagIndex: 0, offset: 1}, end: {tagName: 'p', tagIndex: 0, offset: 9}}
  */
 export const createMarker = (root, range) => {
+  if (!root) {
+    return null
+  }
   let {startContainer, endContainer, startOffset, endOffset} = range
   let startParentTag = _getTag(root, startContainer.parentElement)
   let endParentTag = _getTag(root, endContainer.parentElement)
   let startRealOffset = _getRealOffset(startContainer, startOffset)
   let endRealOffset = _getRealOffset(endContainer, endOffset)
-  return {start: {offset: startRealOffset, ...startParentTag}, end: {offset: endRealOffset, ...endParentTag}}
+  let id = createUUID()
+  return {id, start: {offset: startRealOffset, ...startParentTag}, end: {offset: endRealOffset, ...endParentTag}}
+}
+/**
+ * 删除标记
+ * @author zhengchj
+ * @param id
+ */
+export const unmark = (id) => {
+  document.querySelectorAll(`[${MARK_ATTR}='${id}']`).forEach(el => {
+    //判断待删除节点前面的节点和后面的节点，如果是文本节点，则做整合
+    let prevNode = el.previousSibling, nextNode = el.nextSibling
+    let prevText = '', nextText = ''
+    if (prevNode && prevNode.nodeType === 3) {
+      prevText = prevNode.textContent
+      el.parentNode.removeChild(prevNode)
+    }
+    if (nextNode && nextNode.nodeType === 3) {
+      nextText = nextNode.textContent
+      el.parentNode.removeChild(nextNode)
+    }
+    let textNode = document.createTextNode(prevText + el.textContent + nextText)
+    el.parentNode.replaceChild(textNode, el)
+  })
 }
