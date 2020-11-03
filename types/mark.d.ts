@@ -33,7 +33,7 @@ export interface Options {
  * @param {Markers} markers          标记对象或集合
  * @param options                    配置项
  */
-export declare function mark (root: HTMLElement, markers: Markers, options: Options): void
+export declare function mark (root: HTMLElement, markers: Markers, options?: Options): void
 
 /**
  * 生成标记信息对象
