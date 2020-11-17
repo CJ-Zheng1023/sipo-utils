@@ -4,7 +4,10 @@
  * @param targetStr
  * @return {string}
  */
-export const replaceNotTagArrow = targetStr => targetStr.replace(/<(?![^<>]+>)/gi, '&lt;').replace(/(?<!<[^<>]+)>/gi, '&gt;')
+export const replaceNotTagArrow = targetStr => {
+  const reg = new RegExp('(?<!<[^<>]+)>', 'gi')
+  return targetStr.replace(/<(?![^<>]+>)/gi, '&lt;').replace(reg, '&gt;')
+}
 /**
  * 替换所有<,>符号
  * @author zhengchj
