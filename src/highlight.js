@@ -1,4 +1,4 @@
-import {replaceNotTagArrow, replaceAllArrow, toArray} from './helpers'
+import {replaceAllArrow, toArray} from './helpers'
 /**
  * 截词符转换成正则表达形式
  * @author zhengchj
@@ -61,6 +61,9 @@ const _createRule = (highlighter, truncatable, relatable) => {
   return word
 }
 /**
+ *
+ * 原则：后端传的文本如果含有左右尖括号，需要后端转义，标签的左右尖括号不用转义
+ *
  * 执行高亮操作
  * @author zhengchj
  * @param targetStr     目标字符串
@@ -71,14 +74,15 @@ const _createRule = (highlighter, truncatable, relatable) => {
  */
 export const highlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
   // let str = _removeTag(targetStr)
-  let str = replaceNotTagArrow(targetStr)
+  // let str = replaceNotTagArrow(targetStr)
+  let str = targetStr
   toArray(highlighters).forEach(item => {
     let {word, color} = item
     if (!word) {
       return
     }
     let rule = _createRule(item, truncatable, relatable)
-    const regExp = new RegExp(`((?<!<[^<>]+)${rule}(?![^<>]+>))`, 'gi')
+    const regExp = new RegExp(`(${rule}(?![^<>]*>))`, 'gi')
     //高亮关键词加高亮标签
     str = str.replace(regExp, `<span class="hl" style="color: ${color}">$1</span>`)
   })
@@ -94,7 +98,8 @@ export const highlight = (targetStr, highlighters, truncatable = true, relatable
  * @return string       清除高亮后的字符串
  */
 export const unhighlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
-  let str = replaceNotTagArrow(targetStr)
+  // let str = replaceNotTagArrow(targetStr)
+  let str = targetStr
   toArray(highlighters).forEach(item => {
     let {word, color} = item
     if (!word) {
