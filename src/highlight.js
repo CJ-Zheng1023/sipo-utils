@@ -1,4 +1,4 @@
-import {replaceAllArrow, toArray} from './helpers'
+import {replaceAllArrow, toArray, escapeRegExp} from './helpers'
 /**
  * 截词符转换成正则表达形式
  * @author zhengchj
@@ -51,13 +51,16 @@ const _createRule = (highlighter, truncatable, relatable) => {
   let {word} = highlighter
   //替换高亮词中的<,>
   word = replaceAllArrow(word)
-  //高亮关键词匹配规则,标签中的内容不可匹配
-  if (truncatable) {
+  //正则特殊字符转义
+  word = escapeRegExp(word)
+  //todo 暂时去掉截词符高亮功能
+  /* if (truncatable) {
     word = _replaceTruncation(word)
-  }
-  if (relatable) {
+  } */
+  //todo 暂时去掉关联高亮功能
+  /* if (relatable) {
     word = _replaceRelation(word)
-  }
+  } */
   return word
 }
 /**
@@ -68,11 +71,11 @@ const _createRule = (highlighter, truncatable, relatable) => {
  * @author zhengchj
  * @param targetStr     目标字符串
  * @param highlighters  高亮关键词集合或对象
- * @param truncatable   启用截词符高亮，默认值为true
+ * @param truncatable   启用截词符高亮，默认值为false
  * @param relatable     启用关联高亮，默认值为false
  * @return string       执行高亮后的字符串
  */
-export const highlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
+export const highlight = (targetStr, highlighters, truncatable = false, relatable = false) => {
   // let str = _removeTag(targetStr)
   // let str = replaceNotTagArrow(targetStr)
   let str = targetStr
@@ -82,6 +85,7 @@ export const highlight = (targetStr, highlighters, truncatable = true, relatable
       return
     }
     let rule = _createRule(item, truncatable, relatable)
+    //高亮关键词匹配规则,标签中的内容不可匹配
     const regExp = new RegExp(`(${rule}(?![^<>]*>))`, 'gi')
     //高亮关键词加高亮标签
     str = str.replace(regExp, `<span class="hl" style="color: ${color}">$1</span>`)
@@ -93,11 +97,11 @@ export const highlight = (targetStr, highlighters, truncatable = true, relatable
  * @author zhengchj
  * @param targetStr     目标字符串
  * @param highlighters  高亮关键词集合或对象
- * @param truncatable   启用截词符高亮，默认值为true
+ * @param truncatable   启用截词符高亮，默认值为false
  * @param relatable     启用关联高亮，默认值为false
  * @return string       清除高亮后的字符串
  */
-export const unhighlight = (targetStr, highlighters, truncatable = true, relatable = false) => {
+export const unhighlight = (targetStr, highlighters, truncatable = false, relatable = false) => {
   // let str = replaceNotTagArrow(targetStr)
   let str = targetStr
   toArray(highlighters).forEach(item => {

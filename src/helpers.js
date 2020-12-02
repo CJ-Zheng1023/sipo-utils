@@ -69,3 +69,12 @@ export const createUUID = () => {
     return v.toString(16)
   })
 }
+/**
+ * 正则特殊符号转义   参考lodash  escapeRegExp方法
+ * @param string
+ * @return {string}
+ */
+export const escapeRegExp = (string) => {
+  const reRegExpChar = /[\\^$.*+?()[\]{}|]/g
+  return (string && reRegExpChar.test(string)) ? string.replace(reRegExpChar, '\\$&') : (string || '')
+}

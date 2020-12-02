@@ -1,4 +1,4 @@
-import {replaceNotTagArrow, replaceAllArrow} from './helpers'
+import {replaceNotTagArrow, replaceAllArrow, escapeRegExp} from './helpers'
 
 /**
  * 执行聚焦操作
@@ -9,13 +9,15 @@ import {replaceNotTagArrow, replaceAllArrow} from './helpers'
  */
 export const focus = (targetStr, focusers) => {
   let str = replaceNotTagArrow(targetStr)
-  let words = ``
+  //正则特殊字符转义
+  let words = escapeRegExp(word)
   focusers.forEach(item => {
     let {word} = item
     if (!word) {
       return
     }
     word = replaceAllArrow(word)
+    word =
     words += `|${word}`
   })
   if (!words) {
