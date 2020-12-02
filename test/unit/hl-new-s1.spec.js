@@ -36,4 +36,13 @@ describe('新一代s系统存在的问题测试', () => {
     const tobe = `你好啊.`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
+  test('有问号', () => {
+    const targetStr = `你好啊?abc`
+    const highlighters = [{
+      word: '?a',
+      color: 'red'
+    }]
+    const tobe = `你好啊<span class="hl" style="color: red">?a</span>bc`
+    expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
+  })
 })
