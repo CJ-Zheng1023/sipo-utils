@@ -45,4 +45,22 @@ describe('新一代s系统存在的问题测试', () => {
     const tobe = `你好啊<span class="hl" style="color: red">?a</span>bc`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
+  test('年月日', () => {
+    const targetStr = `2009.5.7`
+    const highlighters = [{
+      word: '2009.5.7',
+      color: 'red'
+    }]
+    const tobe = `<span class="hl" style="color: red">2009.5.7</span>`
+    expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
+  })
+  test('分类号', () => {
+    const targetStr = `CN200780`
+    const highlighters = [{
+      word: 'CN200',
+      color: 'red'
+    }]
+    const tobe = `<span class="hl" style="color: red">CN200</span>780`
+    expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
+  })
 })

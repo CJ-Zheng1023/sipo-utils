@@ -8,6 +8,9 @@ import {replaceAllArrow, escapeRegExp} from './helpers'
  * @returns string      聚焦后的字符串
  */
 export const focus = (targetStr, focusers) => {
+  if (!targetStr) {
+    return ''
+  }
   //let str = replaceNotTagArrow(targetStr)
   let str = targetStr
   let words = ``
