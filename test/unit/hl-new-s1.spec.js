@@ -63,4 +63,13 @@ describe('新一代s系统存在的问题测试', () => {
     const tobe = `<span class="hl" style="color: red">CN200</span>780`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
+  test('高亮词带分类号', () => {
+    const targetStr = `CN200780`
+    const highlighters = [{
+      word: `"CN200780"`,
+      color: 'red'
+    }]
+    const tobe = `<span class="hl" style="color: red">CN200780</span>`
+    expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
+  })
 })

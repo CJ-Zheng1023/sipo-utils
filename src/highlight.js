@@ -53,6 +53,8 @@ const _createRule = (highlighter, truncatable, relatable) => {
   word = replaceAllArrow(word)
   //正则特殊字符转义
   word = escapeRegExp(word)
+  // 去除高亮词前后双引号
+  word = word.replace(/^["“](.+)["”]$/, `$1`)
   //todo 暂时去掉截词符高亮功能
   /* if (truncatable) {
     word = _replaceTruncation(word)
