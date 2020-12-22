@@ -72,4 +72,13 @@ describe('新一代s系统存在的问题测试', () => {
     const tobe = `<span class="hl" style="color: red">CN200780</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
+  test('img标签内内容', () => {
+    const targetStr = `<img src="http://cn123.com"/>`
+    const highlighters = [{
+      word: `"cn123"`,
+      color: 'red'
+    }]
+    const tobe = `<img src="http://cn123.com"/>`
+    expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
+  })
 })
