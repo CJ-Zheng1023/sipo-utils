@@ -79,6 +79,7 @@ describe('新一代s系统存在的问题测试', () => {
       color: 'red'
     }]
     const tobe = `<img src="http://cn123.com"/>`
+
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
 })
