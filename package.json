@@ -1,6 +1,6 @@
 {
   "name": "sipo-utils",
-  "version": "0.6.3",
+  "version": "0.6.5",
   "description": "a utils library for sipo project",
   "main": "dist/sipoUtils.js",
   "module": "dist/sipoUtils.esm.js",
@@ -9,7 +9,7 @@
     "build": "node ./node_modules/rollup/dist/bin/rollup -c"
   },
   "jest": {
-    "testRegex": "/test/unit/hl-new-s1.spec.js"
+    "testRegex": "/test/unit/highlight.spec.js"
   },
   "keywords": [
     "es6",

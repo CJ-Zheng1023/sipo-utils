@@ -1,4 +1,4 @@
-import utils from '../../index'
+import * as utils from '../../src/highlight'
 describe('高亮方法测试', () => {
   test('纯文本情况', () => {
     const targetStr = `对一个正则表达式模式`
@@ -9,7 +9,7 @@ describe('高亮方法测试', () => {
       word: '模式',
       color: 'blue'
     }]
-    const tobe = `对一个<span class="hl" style="color: red">正则</span>表达式<span class="hl" style="color: blue">模式</span>`
+    const tobe = `对一个<span class="hl" style="background-color: red">正则</span>表达式<span class="hl" style="background-color: blue">模式</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('高亮关键词为标签内容', () => {
@@ -21,7 +21,7 @@ describe('高亮方法测试', () => {
       word: 'span',
       color: 'blue'
     }]
-    const tobe = `对一个<span class="hl" style="color: red">正则</span>表达式模式`
+    const tobe = `对一个<span class="hl" style="background-color: red">正则</span>表达式模式`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('高亮关键词带尖括号', () => {
@@ -36,7 +36,7 @@ describe('高亮方法测试', () => {
       word: '>',
       color: 'black'
     }]
-    const tobe = `对一个<span class="hl" style="color: red">正则</span>表达式<span class="hl" style="color: black">&gt;</span>模式<span class="hl" style="color: blue">&lt;span</span>`
+    const tobe = `对一个<span class="hl" style="background-color: red">正则</span>表达式<span class="hl" style="background-color: black">&gt;</span>模式<span class="hl" style="background-color: blue">&lt;span</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('原始文本带标签，高亮关键词带尖括号和标签内容', () => {
@@ -48,7 +48,7 @@ describe('高亮方法测试', () => {
       word: '>',
       color: 'black'
     }]
-    const tobe = `对一个<div>正则</div>表达式<span class="hl" style="color: black">&gt;</span>模式`
+    const tobe = `对一个<div>正则</div>表达式<span class="hl" style="background-color: black">&gt;</span>模式`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   /* test('截词符高亮', () => {
@@ -96,7 +96,7 @@ describe('高亮方法测试', () => {
 })
 describe(`清除高亮方法测试`, () => {
   test('纯文本情况', () => {
-    const targetStr = `对一个<span class="hl" style="color: red">正则</span>表达式<span class="hl" style="color: blue">模式</span>`
+    const targetStr = `对一个<span class="hl" style="background-color: red">正则</span>表达式<span class="hl" style="background-color: blue">模式</span>`
     const highlighters = [{
       word: '正则',
       color: 'red'
@@ -108,7 +108,7 @@ describe(`清除高亮方法测试`, () => {
     expect(utils.unhighlight(targetStr, highlighters)).toBe(tobe)
   })
   test('高亮关键词为标签内容', () => {
-    const targetStr = `对一个<span class="hl" style="color: red">正则</span>表达式模式`
+    const targetStr = `对一个<span class="hl" style="background-color: red">正则</span>表达式模式`
     const highlighters = [{
       word: '正则',
       color: 'red'
@@ -120,7 +120,7 @@ describe(`清除高亮方法测试`, () => {
     expect(utils.unhighlight(targetStr, highlighters)).toBe(tobe)
   })
   test('高亮关键词带尖括号', () => {
-    const targetStr = `对一个<span class="hl" style="color: red">正则</span>表达式<span class="hl" style="color: black">&gt;</span>模式<span class="hl" style="color: blue">&lt;span</span>`
+    const targetStr = `对一个<span class="hl" style="background-color: red">正则</span>表达式<span class="hl" style="background-color: black">&gt;</span>模式<span class="hl" style="background-color: blue">&lt;span</span>`
     const highlighters = [{
       word: '正则',
       color: 'red'
@@ -135,7 +135,7 @@ describe(`清除高亮方法测试`, () => {
     expect(utils.unhighlight(targetStr, highlighters)).toBe(tobe)
   })
   test('原始文本带标签，高亮关键词带尖括号和标签内容', () => {
-    const targetStr = `对一个<div>正则</div>表达式<span class="hl" style="color: black">&gt;</span>模式`
+    const targetStr = `对一个<div>正则</div>表达式<span class="hl" style="background-color: black">&gt;</span>模式`
     const highlighters = [{
       word: 'span',
       color: 'blue'
