@@ -1,4 +1,4 @@
-import {replaceAllArrow, toArray, escapeRegExp} from './helpers'
+import {replaceAllArrow, toArray, escapeRegExp, isLight} from './helpers'
 /**
  * 截词符转换成正则表达形式
  * @author zhengchj
@@ -92,13 +92,16 @@ export const highlight = (targetStr, highlighters, truncatable = false, relatabl
     let rule = _createRule(item, truncatable, relatable)
     //高亮关键词匹配规则,标签中的内容不可匹配
     const regExp = new RegExp(`(${rule}(?![^<>]*>))`, 'gi')
+    //判断是否浅色
+    const fontColor = isLight(color) ? '#000' :'#fff'
     //高亮关键词加高亮标签
-    str = str.replace(regExp, `<span class="hl" style="background-color: ${color}">$1</span>`)
+    str = str.replace(regExp, `<span class="hl" style="background-color: ${color};color: ${fontColor};">$1</span>`)
   })
   return str
 }
 /**
  * 清除高亮操作
+ * @deprecated
  * @author zhengchj
  * @param targetStr     目标字符串
  * @param highlighters  高亮关键词集合或对象

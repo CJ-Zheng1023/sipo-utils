@@ -4,7 +4,7 @@
 export interface Highlighter{
   //高亮词
   word: string
-  //颜色
+  //颜色,支持rgb和16进制形式
   color: string
 }
 export type Highlighters = Array<Highlighter> | Highlighter
@@ -22,6 +22,7 @@ export declare function highlight(targetStr: string, highlighters: Highlighters,
 
 /**
  * 清除高亮
+ * @deprecated
  * @author zhengchj
  * @param {string} targetStr               目标字符串
  * @param {Highlighters} highlighters      高亮关键词集合或对象

@@ -6,7 +6,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: '响应于一个触发信号提供一个地电位的第一装置(130)',
       color: 'red'
     }]
-    const tobe = `<span class="hl" style="background-color: red">响应于一个触发信号提供一个地电位的第一装置(130)</span>`
+    const tobe = `<span class="hl" style="background-color: red;color: #000;">响应于一个触发信号提供一个地电位的第一装置(130)</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('数字带括号', () => {
@@ -15,7 +15,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: '(162，164，122)',
       color: 'red'
     }]
-    const tobe = `<span class="hl" style="background-color: red">(162，164，122)</span>`
+    const tobe = `<span class="hl" style="background-color: red;color: #000;">(162，164，122)</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('正则特殊字符', () => {
@@ -24,7 +24,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: '.',
       color: 'red'
     }]
-    const tobe = `你好啊<span class="hl" style="background-color: red">.</span>`
+    const tobe = `你好啊<span class="hl" style="background-color: red;color: #000;">.</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('只有英文括号', () => {
@@ -42,7 +42,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: '?a',
       color: 'red'
     }]
-    const tobe = `你好啊<span class="hl" style="background-color: red">?a</span>bc`
+    const tobe = `你好啊<span class="hl" style="background-color: red;color: #000;">?a</span>bc`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('年月日', () => {
@@ -51,7 +51,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: '2009.5.7',
       color: 'red'
     }]
-    const tobe = `<span class="hl" style="background-color: red">2009.5.7</span>`
+    const tobe = `<span class="hl" style="background-color: red;color: #000;">2009.5.7</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('分类号', () => {
@@ -60,7 +60,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: 'CN200',
       color: 'red'
     }]
-    const tobe = `<span class="hl" style="background-color: red">CN200</span>780`
+    const tobe = `<span class="hl" style="background-color: red;color: #000;">CN200</span>780`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('高亮词带分类号', () => {
@@ -69,7 +69,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: `"CN200780"`,
       color: 'red'
     }]
-    const tobe = `<span class="hl" style="background-color: red">CN200780</span>`
+    const tobe = `<span class="hl" style="background-color: red;color: #000;">CN200780</span>`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
   test('img标签内内容', () => {
@@ -90,7 +90,7 @@ describe('新一代s系统存在的问题测试', () => {
       word: `催化`,
       color: 'blue'
     }]
-    const tobe = `<span class="hl" style="background-color: blue">催化</span>剂你好啥问题你好啊滚吧25*2的2-6，好吧。伊丽莎白：<span class="hl" style="background-color: red">硫</span>化物什么鬼，<span class="hl" style="background-color: red">硫</span>化物碰到氧化物啥问题，会发生什么，<span class="hl" style="background-color: red">硫</span>化进行制备。`
+    const tobe = `<span class="hl" style="background-color: blue;color: #fff;">催化</span>剂你好啥问题你好啊滚吧25*2的2-6，好吧。伊丽莎白：<span class="hl" style="background-color: red;color: #000;">硫</span>化物什么鬼，<span class="hl" style="background-color: red;color: #000;">硫</span>化物碰到氧化物啥问题，会发生什么，<span class="hl" style="background-color: red;color: #000;">硫</span>化进行制备。`
     expect(utils.highlight(targetStr, highlighters)).toBe(tobe)
   })
 })
