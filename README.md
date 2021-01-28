@@ -37,7 +37,8 @@
 
      ```
      /**
-      * 清除高亮操作
+      * 清除高亮操作(废弃)
+      * @deprecated
       * @param targetStr     目标字符串
       * @param highlighters  高亮关键词集合或对象   example:[{word: "bus", color: "red"}] 或者 {word: "bus", color: "red"}
       * @param truncatable   启用截词符高亮，默认值为false
