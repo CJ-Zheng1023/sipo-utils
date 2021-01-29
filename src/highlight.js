@@ -55,6 +55,8 @@ const _createRule = (highlighter, truncatable, relatable) => {
   word = escapeRegExp(word)
   // 去除高亮词前后双引号
   word = word.replace(/^["“](.+)["”]$/, `$1`)
+  // 拆解高亮关键词
+  word = _spreadWord(word)
   //todo 暂时去掉截词符高亮功能
   /* if (truncatable) {
     word = _replaceTruncation(word)
@@ -64,6 +66,20 @@ const _createRule = (highlighter, truncatable, relatable) => {
     word = _replaceRelation(word)
   } */
   return word
+}
+/**
+ * 展开高亮关键词，每个字符前后加正则规则
+ * @example 手机 -> (<span class="hl"[^<>]+>手</span>|手)(<span class="hl"[^<>]+>机</span>|机)
+ * @param word   高亮关键词
+ * @returns string
+ */
+const _spreadWord = word => {
+  const letters = [...word]
+  let newWord = ''
+  for (const letter of letters) {
+    newWord += `(<span class="hl"[^<>]+>${letter}</span>|${letter})`
+  }
+  return newWord
 }
 /**
  *
@@ -95,7 +111,9 @@ export const highlight = (targetStr, highlighters, truncatable = false, relatabl
     //判断是否浅色
     const fontColor = isLight(color) ? '#000' :'#fff'
     //高亮关键词加高亮标签
-    str = str.replace(regExp, `<span class="hl" style="background-color: ${color};color: ${fontColor};">$1</span>`)
+    str =  str.replace(regExp, word => {
+      return word.replace(/([^<>](?![^<>]*>))/gi, `<span class="hl" style="background-color: ${color};color: ${fontColor};">$1</span>`)
+    })
   })
   return str
 }
