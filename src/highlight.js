@@ -36,9 +36,9 @@ const _replaceRelation = (word, truncatable, relatable) => {
   }
   size = Number(size)
   if (type.toUpperCase() === `W`) {
-    return `${p1}(<span class="hl"[^<>]+>(&lt;|&gt;|[^<>])</span>|(&lt;|&gt;|[^<>])){${size}}${p2}`
+    return `${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){${size}}${p2}`
   } else {
-    return `(${p1}(<span class="hl"[^<>]+>(&lt;|&gt;|[^<>])</span>|(&lt;|&gt;|[^<>])){${size}}${p2})|(${p2}(<span class="hl"[^<>]+>(&lt;|&gt;|[^<>])</span>|(&lt;|&gt;|[^<>])){${size}}${p1})`
+    return `(${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){${size}}${p2})|(${p2}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){${size}}${p1})`
   }
 }
 /**
@@ -97,7 +97,7 @@ const _spreadWord = word => {
  * @param char
  * @returns string
  */
-const _buildCharRegExp = char => `(<span class="hl"[^<>]+>${char}</span>|${char})`
+const _buildCharRegExp = char => `((<span class="hl"[^<>]+>)+${char}(</span>)+|${char})`
 /**
  *
  * 原则：后端传的文本如果含有左右尖括号，需要后端转义，标签的左右尖括号不用转义
