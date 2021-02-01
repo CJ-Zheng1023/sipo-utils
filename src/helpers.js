@@ -70,12 +70,12 @@ export const createUUID = () => {
   })
 }
 /**
- * 正则特殊符号转义   参考lodash  escapeRegExp方法
+ * 正则特殊符号转义(问号因为业务需要不需要转义，在highlight.js _replaceTruncation方法里单独处理)   参考lodash  escapeRegExp方法
  * @param string
  * @return {string}
  */
 export const escapeRegExp = (string) => {
-  const reRegExpChar = /[\\^$.*+?()[\]{}|]/g
+  const reRegExpChar = /[\\^$.*+()[\]{}|]/g
   return (string && reRegExpChar.test(string)) ? string.replace(reRegExpChar, '\\$&') : (string || '')
 }
 /**

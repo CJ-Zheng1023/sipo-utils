@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="test"></div>
+<script src="dist/sipoUtils.js"></script>
+<script type="text/javascript">
+  var str = '响1a一个触发信号提供一个地电位的第一装置'
+  var highlighters = [{
+    word: '响 2w 一',
+    color: 'red'
+  }, {
+    word: '1# 3w 发信号',
+    color: 'blue'
+  }, {
+    word: '装置',
+    color: 'black'
+  }]
+  var hlStr = sipoUtils.highlight(str, highlighters, true, true)
+  document.querySelector("#test").innerHTML = hlStr
+</script>
+</body>
+</html>
