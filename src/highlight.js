@@ -62,11 +62,15 @@ const _createRule = (highlighter, truncatable, relatable) => {
     word = replaceAllArrow(word)
     //正则特殊字符转义
     word = escapeRegExp(word)
-    // 拆解高亮关键词
-    word = _spreadWord(word)
-    // 截词符处理
-    if (truncatable) {
+    if (truncatable && word !== '?' && word !== '？') {
+      // 拆解高亮关键词
+      word = _spreadWord(word)
+      // 截词符处理
       word = _replaceTruncation(word)
+    } else {
+      word = word.replace(/\?/, '\\?')
+      // 拆解高亮关键词
+      word = _spreadWord(word)
     }
   }
   return word
