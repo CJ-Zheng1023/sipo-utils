@@ -6,7 +6,7 @@
   "module": "dist/sipoUtils.esm.js",
   "scripts": {
     "test": "jest",
-    "build": "node ./node_modules/rollup/dist/bin/rollup -c"
+    "build": "rollup -c"
   },
   "jest": {
     "testRegex": "/test/unit/v0.8.0-highlight.spec.js"
