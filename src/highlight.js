@@ -102,6 +102,7 @@ const _spreadWord = word => {
  * @returns string
  */
 const _buildCharRegExp = char => `((<span class="hl"[^<>]+>)+${char}(</span>)+|${char})`
+const BORDER_WIDTH = '2px'
 /**
  *
  * 原则：后端传的文本如果含有左右尖括号，需要后端转义，标签的左右尖括号不用转义
@@ -129,7 +130,7 @@ export const highlight = (targetStr, highlighters, truncatable = false, relatabl
     const isRelation = _ifRelation(word)
     let rule = _createRule(item, truncatable, relatable)
     //高亮关键词匹配规则,标签中的内容不可匹配
-    const regExp = new RegExp(`(${rule}(?![^<>]*>))`, 'gi')
+    const regExp = new RegExp(`((${rule})(?![^<>]*>))`, 'gi')
     //判断是否浅色
     const fontColor = isLight(color) ? '#000' :'#fff'
     //高亮关键词加高亮标签
@@ -145,11 +146,11 @@ export const highlight = (targetStr, highlighters, truncatable = false, relatabl
         return word.replace(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi, w => {
           let result = ''
           if (i === 1) {
-            result = `<span class="hl" style="border-top: 1px solid ${color};border-bottom: 1px solid ${color};border-left: 1px solid ${color};">${w}</span>`
+            result = `<span class="hl" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};border-left: ${BORDER_WIDTH} solid ${color};">${w}</span>`
           } else if (i === matchesLength) {
-            result = `<span class="hl" style="border-top: 1px solid ${color};border-bottom: 1px solid ${color};border-right: 1px solid ${color};">${w}</span>`
+            result = `<span class="hl" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};border-right: ${BORDER_WIDTH} solid ${color};">${w}</span>`
           } else {
-            result = `<span class="hl" style="border-top: 1px solid ${color};border-bottom: 1px solid ${color};">${w}</span>`
+            result = `<span class="hl" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};">${w}</span>`
           }
           i++
           return result

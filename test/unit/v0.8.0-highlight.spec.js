@@ -79,7 +79,7 @@ describe('v0.8.0-alpha版本高亮关联关系式测试', () => {
       word: '响 2D 一',
       color: 'red'
     }]
-    const tobe = `<span class="hl" style="border-top: 1px solid red;border-bottom: 1px solid red;border-left: 1px solid red;">响</span><span class="hl" style="border-top: 1px solid red;border-bottom: 1px solid red;">应</span><span class="hl" style="border-top: 1px solid red;border-bottom: 1px solid red;">于</span><span class="hl" style="border-top: 1px solid red;border-bottom: 1px solid red;border-right: 1px solid red;">一</span>个触发信号提供一个地电位的第一装置`
+    const tobe = `<span class="hl" style="border-top: 2px solid red;border-bottom: 2px solid red;border-left: 2px solid red;">响</span><span class="hl" style="border-top: 2px solid red;border-bottom: 2px solid red;">应</span><span class="hl" style="border-top: 2px solid red;border-bottom: 2px solid red;">于</span><span class="hl" style="border-top: 2px solid red;border-bottom: 2px solid red;border-right: 2px solid red;">一</span>个触发信号提供一个地电位的第一装置`
     expect(utils.highlight(targetStr, highlighters, true, true)).toBe(tobe)
   })
 })

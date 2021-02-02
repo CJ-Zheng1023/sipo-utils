@@ -9,7 +9,7 @@
 <script src="dist/sipoUtils.js"></script>
 <script type="text/javascript">
   var str = '响1a一个触发信号提供一个地电位的第一装置?'
-  var highlighters = [{
+  /*var highlighters = [{
     word: '响 1w a 1w 个',
     color: 'red'
   }, {
@@ -24,6 +24,13 @@
   }, {
     word: '?',
     color: 'yellow'
+  }]*/
+  var highlighters = [{
+    word: '响 w 1',
+    color: 'red'
+  }, {
+    word: 'c 4d s',
+    color: 'blue'
   }]
   var hlStr = sipoUtils.highlight(str, highlighters, true, true)
   document.querySelector("#test").innerHTML = hlStr
