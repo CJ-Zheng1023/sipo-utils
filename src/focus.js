@@ -29,7 +29,7 @@ export const focus = (targetStr, focusers) => {
   }
   words = words.substr(1)
   //正则规则
-  let regExp = new RegExp(`(([^.。！!]*(\.|。|！|!))?[^.。！!]*(${words})[^.。！!]*(\.|。|！|!))`, `gi`)
+  let regExp = new RegExp(`(([^.。！!]*(\.|。|！|!))?[^.。！!]*((${words})(?![^<>]*>))[^.。！!]*(\.|。|！|!))`, `gi`)
   //符合条件的句子前后加@@标记，替换@@@@为空字符串，合并连续的符合条件的句子
   let s = str.replace(regExp, `@@$1@@`).replace(`@@@@`, ``)
   //取出符合条件的字符串集合
