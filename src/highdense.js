@@ -34,7 +34,7 @@ export const highdense = (container, className = `hl`) => {
   let map = new Map()
   let height = container.offsetHeight
   nodes.forEach(node => {
-    let color = node['style']['color']
+    let color = node['style']['background-color'] || node['style']['border-top-color']
     if (!color) {
       return
     }

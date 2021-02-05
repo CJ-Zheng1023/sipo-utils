@@ -22,6 +22,8 @@ export const focus = (targetStr, focusers) => {
     word = replaceAllArrow(word)
     //正则特殊字符转义
     word = escapeRegExp(word)
+    //针对问号进行转义
+    word = word.replace(/\?/, '\\?')
     words += `|${word}`
   })
   if (!words) {

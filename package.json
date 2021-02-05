@@ -1,6 +1,6 @@
 {
   "name": "sipo-utils",
-  "version": "0.8.0-beta5",
+  "version": "0.8.0-beta6",
   "description": "a utils library for sipo project",
   "main": "dist/sipoUtils.js",
   "module": "dist/sipoUtils.esm.js",
