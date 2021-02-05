@@ -36,9 +36,9 @@ const _replaceRelation = (word, truncatable, relatable) => {
   }
   size = Number(size)
   if (type.toUpperCase() === `W`) {
-    return `${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){${size}}${p2}`
+    return `${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2}`
   } else {
-    return `(${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){${size}}${p2})|(${p2}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){${size}}${p1})`
+    return `(${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2})|(${p2}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p1})`
   }
 }
 /**
