@@ -36,9 +36,9 @@ const _replaceRelation = (word, truncatable, relatable) => {
   }
   size = Number(size)
   if (type.toUpperCase() === `W`) {
-    return `${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2}`
+    return `${p1}((<span class="hl[^"]*"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2}`
   } else {
-    return `(${p1}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2})|(${p2}((<span class="hl"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p1})`
+    return `(${p1}((<span class="hl[^"]*"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2})|(${p2}((<span class="hl[^"]*"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p1})`
   }
 }
 /**
@@ -84,7 +84,7 @@ const _createRule = (highlighter, truncatable, relatable) => {
 const _ifRelation = word => /\s+(0|[1-9][0-9]*)?(w|W|d|D)\s+/.test(word)
 /**
  * 展开高亮关键词，每个字符前后加正则规则
- * @example 手机 -> (<span class="hl"[^<>]+>手</span>|手)(<span class="hl"[^<>]+>机</span>|机)
+ * @example 手机 -> (<span class="hl[^"]*"[^<>]+>手</span>|手)(<span class="hl[^"]*"[^<>]+>机</span>|机)
  * @param word   高亮关键词
  * @returns string
  */
@@ -101,7 +101,7 @@ const _spreadWord = word => {
  * @param char
  * @returns string
  */
-const _buildCharRegExp = char => `((<span class="hl"[^<>]+>)+${char}(</span>)+|${char})`
+const _buildCharRegExp = char => `((<span class="hl[^"]*"[^<>]+>)+${char}(</span>)+|${char})`
 const BORDER_WIDTH = '2px'
 /**
  *
@@ -135,18 +135,18 @@ export const highlight = (targetStr, highlighters, truncatable = false, relatabl
     const fontColor = isLight(color) ? '#000' :'#fff'
     //高亮关键词加高亮标签
     str =  str.replace(regExp, word => {
+      const matches = word.match(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi)
+      if (!matches) {
+        return word
+      }
+      const matchesLength = matches.length
       // 关联关系高亮
       if (isRelation) {
-        const matches = word.match(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi)
-        if (!matches) {
-          return word
-        }
-        const matchesLength = matches.length
         let i = 1
         return word.replace(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi, w => {
           let result = ''
           if (i === 1) {
-            result = `<span class="hl" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};border-left: ${BORDER_WIDTH} solid ${color};">${w}</span>`
+            result = `<span class="hl hl-start" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};border-left: ${BORDER_WIDTH} solid ${color};">${w}</span>`
           } else if (i === matchesLength) {
             result = `<span class="hl" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};border-right: ${BORDER_WIDTH} solid ${color};">${w}</span>`
           } else {
@@ -156,7 +156,17 @@ export const highlight = (targetStr, highlighters, truncatable = false, relatabl
           return result
         })
       } else {
-        return word.replace(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi, `<span class="hl" style="background-color: ${color};color: ${fontColor};">$1</span>`)
+        let i = 1
+        return word.replace(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi, w => {
+          let result = ''
+          if (i === 1) {
+            result = `<span class="hl hl-start" style="background-color: ${color};color: ${fontColor};">${w}</span>`
+          } else {
+            result = `<span class="hl" style="background-color: ${color};color: ${fontColor};">${w}</span>`
+          }
+          i++
+          return result
+        })
       }
     })
   })
