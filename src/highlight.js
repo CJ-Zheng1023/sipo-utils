@@ -5,23 +5,26 @@ import {replaceAllArrow, toArray, escapeRegExp, isLight} from './helpers'
  * @param word   高亮关键词
  * @private
  */
-const _replaceTruncation = word => word.replace(/#/gi, '[a-zA-Z]').replace(/[?？]/gi, '.?')
+const _replaceTruncation = word => word.replace(/#/gi, '[a-zA-Z]').replace(/[?？]/gi, '(&lt;|&gt;|[^<>])?')
 /**
  * 关联高亮词转换成正则表达式
  * @author zhengchj
  * @param word   高亮关键词
+ * @param truncatable  启用截词符高亮
+ * @param relatable    启用关联高亮
  * @returns string
  * @example 输入:A 3W B    输出:A.{3}B         输入:A 3D B   输出:(A.{3}B)|(B.{3}A)
  * @private
  */
-const _replaceRelation = word => {
+const _replaceRelation = (word, truncatable, relatable) => {
   let matches1 = word.match(/\s+(0|[1-9][0-9]*)?(w|W|d|D)\s+/gi)
-  if (!matches1 || !matches1.length) {
-    return word
-  }
   let match = matches1[0]
   //获取关联词
-  let [p1, p2] = word.split(match)
+  const index = word.indexOf(match)
+  let p1 = word.substr(0, index)
+  let p2 = word.substr(index + match.length)
+  p1 = _createRule({word: p1}, truncatable, relatable)
+  p2 = _createRule({word: p2}, truncatable, relatable)
   //获取关联运算符
   let operation = match.trim()
   let size = 0, type = ''
@@ -33,9 +36,9 @@ const _replaceRelation = word => {
   }
   size = Number(size)
   if (type.toUpperCase() === `W`) {
-    return `${p1}.{${size}}${p2}`
+    return `${p1}((<span class="hl[^"]*"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2}`
   } else {
-    return `(${p1}.{${size}}${p2})|(${p2}.{${size}}${p1})`
+    return `(${p1}((<span class="hl[^"]*"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p2})|(${p2}((<span class="hl[^"]*"[^<>]+>)+(&lt;|&gt;|[^<>])(</span>)+|(&lt;|&gt;|[^<>])){0,${size}}${p1})`
   }
 }
 /**
@@ -49,22 +52,57 @@ const _replaceRelation = word => {
  */
 const _createRule = (highlighter, truncatable, relatable) => {
   let {word} = highlighter
-  //替换高亮词中的<,>
-  word = replaceAllArrow(word)
-  //正则特殊字符转义
-  word = escapeRegExp(word)
-  // 去除高亮词前后双引号
-  word = word.replace(/^["“](.+)["”]$/, `$1`)
-  //todo 暂时去掉截词符高亮功能
-  /* if (truncatable) {
-    word = _replaceTruncation(word)
-  } */
-  //todo 暂时去掉关联高亮功能
-  /* if (relatable) {
-    word = _replaceRelation(word)
-  } */
+  // 关联运算符处理
+  if (relatable && _ifRelation(word)) {
+    word = _replaceRelation(word, truncatable, relatable)
+  } else {
+    // 去除高亮词前后双引号
+    word = word.replace(/^["“](.+)["”]$/, `$1`)
+    //替换高亮词中的<,>
+    word = replaceAllArrow(word)
+    //正则特殊字符转义
+    word = escapeRegExp(word)
+    if (truncatable && word !== '?' && word !== '？') {
+      // 拆解高亮关键词
+      word = _spreadWord(word)
+      // 截词符处理
+      word = _replaceTruncation(word)
+    } else {
+      word = word.replace(/\?/, '\\?')
+      // 拆解高亮关键词
+      word = _spreadWord(word)
+    }
+  }
   return word
 }
+/**
+ * 判断高亮关键词是否包含关系符
+ * @author zhengchj
+ * @param word  高亮关键词
+ * @returns string
+ */
+const _ifRelation = word => /\s+(0|[1-9][0-9]*)?(w|W|d|D)\s+/.test(word)
+/**
+ * 展开高亮关键词，每个字符前后加正则规则
+ * @example 手机 -> (<span class="hl[^"]*"[^<>]+>手</span>|手)(<span class="hl[^"]*"[^<>]+>机</span>|机)
+ * @param word   高亮关键词
+ * @returns string
+ */
+const _spreadWord = word => {
+  const chars = word.match(/(&lt;|&gt;|\\[\\^$.*+?()[\]{}|]|.)/gi)
+  let newWord = ''
+  for (const char of chars) {
+    newWord += _buildCharRegExp(char)
+  }
+  return newWord
+}
+/**
+ * 为字符构建正则表达式
+ * @param char
+ * @returns string
+ */
+const _buildCharRegExp = char => `((<span class="hl[^"]*"[^<>]+>)+${char}(</span>)+|${char})`
+const BORDER_WIDTH = '2px'
 /**
  *
  * 原则：后端传的文本如果含有左右尖括号，需要后端转义，标签的左右尖括号不用转义
@@ -89,13 +127,48 @@ export const highlight = (targetStr, highlighters, truncatable = false, relatabl
     if (!word) {
       return
     }
+    const isRelation = _ifRelation(word)
     let rule = _createRule(item, truncatable, relatable)
     //高亮关键词匹配规则,标签中的内容不可匹配
-    const regExp = new RegExp(`(${rule}(?![^<>]*>))`, 'gi')
+    const regExp = new RegExp(`((${rule})(?![^<>]*>))`, 'gi')
     //判断是否浅色
     const fontColor = isLight(color) ? '#000' :'#fff'
     //高亮关键词加高亮标签
-    str = str.replace(regExp, `<span class="hl" style="background-color: ${color};color: ${fontColor};">$1</span>`)
+    str =  str.replace(regExp, word => {
+      const matches = word.match(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi)
+      if (!matches) {
+        return word
+      }
+      const matchesLength = matches.length
+      // 关联关系高亮
+      if (isRelation) {
+        let i = 1
+        return word.replace(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi, w => {
+          let result = ''
+          if (i === 1) {
+            result = `<span class="hl hl-start" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};border-left: ${BORDER_WIDTH} solid ${color};">${w}</span>`
+          } else if (i === matchesLength) {
+            result = `<span class="hl" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};border-right: ${BORDER_WIDTH} solid ${color};">${w}</span>`
+          } else {
+            result = `<span class="hl" style="border-top: ${BORDER_WIDTH} solid ${color};border-bottom: ${BORDER_WIDTH} solid ${color};">${w}</span>`
+          }
+          i++
+          return result
+        })
+      } else {
+        let i = 1
+        return word.replace(/((&lt;|&gt;|[^<>])(?![^<>]*>))/gi, w => {
+          let result = ''
+          if (i === 1) {
+            result = `<span class="hl hl-start" style="background-color: ${color};color: ${fontColor};">${w}</span>`
+          } else {
+            result = `<span class="hl" style="background-color: ${color};color: ${fontColor};">${w}</span>`
+          }
+          i++
+          return result
+        })
+      }
+    })
   })
   return str
 }

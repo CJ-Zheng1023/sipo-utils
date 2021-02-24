@@ -29,12 +29,12 @@ const _getPercentage = (dividend, divisor) => {
  * @param className   需要高密的样式名
  * @return {Map}      高密Map<颜色, 相对高度百分比集合set>
  */
-export const highdense = (container, className = `hl`) => {
+export const highdense = (container, className = `hl-start`) => {
   let nodes = container.querySelectorAll(`.${className}`)
   let map = new Map()
   let height = container.offsetHeight
   nodes.forEach(node => {
-    let color = node['style']['color']
+    let color = node['style']['background-color'] || node['style']['border-top-color']
     if (!color) {
       return
     }
